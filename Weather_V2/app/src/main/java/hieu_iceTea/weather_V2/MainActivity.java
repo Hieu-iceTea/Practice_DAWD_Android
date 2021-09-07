@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
         new WeatherDataRepository().getData(
 
                 cityName,
