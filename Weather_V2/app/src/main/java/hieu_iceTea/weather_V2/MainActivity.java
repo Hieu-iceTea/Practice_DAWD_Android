@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         imageWeatherIcon.setVisibility(View.VISIBLE);
                         Glide.with(getApplicationContext())
                                 .asBitmap()
-                                .load("https://openweathermap.org/img/wn/" + icon + "@2x.png")
+                                .load("https://openweathermap.org/img/wn/" + icon + "@2x.png") //Chú ý: thêm chữ 's' -> https
                                 .into(imageWeatherIcon);
                     }
 
