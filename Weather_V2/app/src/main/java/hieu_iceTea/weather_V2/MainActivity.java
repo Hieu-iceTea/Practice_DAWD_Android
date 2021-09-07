@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
+import hieu_iceTea.weather_V2.model.Weather;
 import hieu_iceTea.weather_V2.repository.WeatherDataRepository;
+import hieu_iceTea.weather_V2.utils.Util;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,26 +47,42 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        new WeatherDataRepository(cityName).getData((weathers, main) -> {
-            lblResult.setText(weathers.toString() + "\r\n" + "\r\n" +
 
-                    "Temp: " + main.getTemp() + "\r\n" +
-                    "Feels Like: " + main.getFeels_like() + "\r\n" +
-                    "Temp Min: " + main.getTemp_min() + "\r\n" +
-                    "Temp Max: " + main.getTemp_max() + "\r\n" +
+        new WeatherDataRepository(cityName).getData((weathers, main) -> {
+
+            // 01. Get result text
+            String result = "";
+
+            if (!weathers.isEmpty()) {
+                for (Weather weather : weathers) {
+                    result += weather.getMain() + ": " + weather.getDescription() + "\r\n";
+                }
+                result += "\r\n";
+            }
+
+            result += "Temp: " + Util.convertTempKelvinToCelsius(main.getTemp(), 2) + " °C" + "\r\n" +
+                    "Feels Like: " + Util.convertTempKelvinToCelsius(main.getFeels_like(), 2) + " °C" + "\r\n" +
+                    "Temp Min: " + Util.convertTempKelvinToCelsius(main.getTemp_min(), 2) + " °C" + "\r\n" +
+                    "Temp Max: " + Util.convertTempKelvinToCelsius(main.getTemp_max(), 2) + " °C" + "\r\n" +
                     "Pressure: " + main.getPressure() + "\r\n" +
                     "Humidity: " + main.getHumidity() + "\r\n" +
                     "Sea Level: " + main.getSea_level() + "\r\n" +
-                    "Grnd Level: " + main.getGrnd_level() + "\r\n"
-            );
+                    "Grnd Level: " + main.getGrnd_level() + "\r\n";
 
-            String icon = weathers.get(0).getIcon();
 
-            imageWeatherIcon.setVisibility(View.VISIBLE);
-            Glide.with(getApplicationContext())
-                    .asBitmap()
-                    .load("http://openweathermap.org/img/wn/" + icon + "@2x.png")
-                    .into(imageWeatherIcon);
+            lblResult.setText(result);
+
+            // 02. Get icon
+            if (!weathers.isEmpty()) {
+                String icon = weathers.get(0).getIcon();
+
+                imageWeatherIcon.setVisibility(View.VISIBLE);
+                Glide.with(getApplicationContext())
+                        .asBitmap()
+                        .load("https://openweathermap.org/img/wn/" + icon + "@2x.png")
+                        .into(imageWeatherIcon);
+            }
+
         });
 
     }
