@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
-import hieu_iceTea.weather_V2.repository.DataRepository;
+import hieu_iceTea.weather_V2.repository.WeatherDataRepository;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
         lblResult.setVisibility(View.VISIBLE);
         lblResult.setText("Loading...");
 
-        if (txtCityName.getText().toString().isEmpty()) {
+        String cityName = txtCityName.getText().toString();
+
+        if (cityName.isEmpty()) {
             notificationPleaseEnterCityName();
             return;
         }
 
-        new DataRepository().getData((weathers, main) -> {
-            //Todo: đang làm đến đây, chờ xíu
+        new WeatherDataRepository(cityName).getData((weathers, main) -> {
             lblResult.setText(weathers.toString() + "\r\n" + "\r\n" +
 
                     "Temp: " + main.getTemp() + "\r\n" +

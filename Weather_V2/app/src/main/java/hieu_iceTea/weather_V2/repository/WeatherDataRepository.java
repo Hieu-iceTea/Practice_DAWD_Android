@@ -15,12 +15,18 @@ import hieu_iceTea.weather_V2.model.Main;
 import hieu_iceTea.weather_V2.model.Weather;
 
 
-public class DataRepository {
+public class WeatherDataRepository {
 
-    String url = "https://api.openweathermap.org/data/2.5/weather?q=vinh&appid=3790f712337cbfece38c0ae41594ad7c";
+    String cityName;
+    String url;
 
     List<Weather> weathers = new ArrayList<>();
     Main main = new Main();
+
+    public WeatherDataRepository(String cityName) {
+        this.cityName = cityName;
+        this.url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=3790f712337cbfece38c0ae41594ad7c";
+    }
 
     public void getData(AsyncProcess callBackAsyncProcess) {
 
