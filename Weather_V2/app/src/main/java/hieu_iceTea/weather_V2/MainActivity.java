@@ -48,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        new WeatherDataRepository(cityName).getData(
+        new WeatherDataRepository().getData(
+
+                cityName,
 
                 (weathers, main) -> {
 
@@ -102,14 +104,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void notificationCouldNotFindWeather() {
         lblResult.setText("");
-        Toast.makeText(getApplicationContext(), "Could not find weather. 😯", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "❌ Could not find weather. 😯", Toast.LENGTH_SHORT).show();
 
         imageWeatherIcon.setVisibility(View.INVISIBLE);
     }
 
     private void notificationPleaseEnterCityName() {
         lblResult.setText("");
-        Toast.makeText(getApplicationContext(), "Please enter the city name. 🤔", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "❗❓ Please enter the city name. 🤔", Toast.LENGTH_SHORT).show();
 
         imageWeatherIcon.setVisibility(View.INVISIBLE);
     }

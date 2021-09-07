@@ -20,21 +20,19 @@ import hieu_iceTea.weather_V2.model.Weather;
 
 public class WeatherDataRepository {
 
-    String cityName;
     String url;
 
     List<Weather> weathers = new ArrayList<>();
     Main main = new Main();
 
-    public WeatherDataRepository(String cityName) {
-        this.cityName = cityName;
-        this.url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=3790f712337cbfece38c0ae41594ad7c";
-    }
+    public void getData(String cityName, AsyncProcess callBackAsyncProcess, @Nullable Response.ErrorListener errorListener) {
 
-    public void getData(AsyncProcess callBackAsyncProcess, @Nullable Response.ErrorListener errorListener) {
+        this.url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=3790f712337cbfece38c0ae41594ad7c";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+
                 url,
+
                 response -> {
 
                     try {
@@ -69,6 +67,7 @@ public class WeatherDataRepository {
                     }
 
                 },
+
                 error -> {
                     if (errorListener != null) {
                         errorListener.onErrorResponse(error);
