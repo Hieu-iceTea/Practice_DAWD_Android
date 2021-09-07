@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     EditText txtCityName;
     TextView lblResult;
     ImageView imageWeatherIcon;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
         txtCityName = findViewById(R.id.txtCityName);
         lblResult = findViewById(R.id.lblResult);
         imageWeatherIcon = findViewById(R.id.imageWeatherIcon);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     public void onBtnGetWeatherClick(View view) {
 
         hideKeyboard();
 
-        lblResult.setVisibility(View.VISIBLE);
-        lblResult.setText("Loading...");
+        showLoading();
 
         String cityName = txtCityName.getText().toString();
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 cityName,
 
                 (weathers, main) -> {
+
+                    hideLoading();
 
                     // 01. Get result text
                     String result = "";
@@ -106,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "❌ Could not find weather. 😯", Toast.LENGTH_SHORT).show();
 
         imageWeatherIcon.setVisibility(View.INVISIBLE);
+
+        hideLoading();
     }
 
     private void notificationPleaseEnterCityName() {
@@ -113,6 +119,17 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "❗❓ Please enter the city name. 🤔", Toast.LENGTH_SHORT).show();
 
         imageWeatherIcon.setVisibility(View.INVISIBLE);
+
+        hideLoading();
     }
 
+    private void showLoading(){
+        lblResult.setVisibility(View.VISIBLE);
+        lblResult.setText("Loading...");
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoading(){
+        progressBar.setVisibility(View.INVISIBLE);
+    }
 }
