@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         lblResult.setVisibility(View.VISIBLE);
         lblResult.setText("Loading...");
         progressBar.setVisibility(View.VISIBLE);
+        imageWeatherIcon.setVisibility(View.INVISIBLE);
     }
 
     private void hideLoading(){
