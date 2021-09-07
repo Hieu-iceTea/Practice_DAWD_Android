@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+
 import hieu_iceTea.weather_V2.repository.DataRepository;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +45,25 @@ public class MainActivity extends AppCompatActivity {
 
         new DataRepository().getData((weathers, main) -> {
             //Todo: đang làm đến đây, chờ xíu
-            lblResult.setText(weathers.toString() + "\r\n" + main.toString());
+            lblResult.setText(weathers.toString() + "\r\n" + "\r\n" +
+
+                    "Temp: " + main.getTemp() + "\r\n" +
+                    "Feels Like: " + main.getFeels_like() + "\r\n" +
+                    "Temp Min: " + main.getTemp_min() + "\r\n" +
+                    "Temp Max: " + main.getTemp_max() + "\r\n" +
+                    "Pressure: " + main.getPressure() + "\r\n" +
+                    "Humidity: " + main.getHumidity() + "\r\n" +
+                    "Sea Level: " + main.getSea_level() + "\r\n" +
+                    "Grnd Level: " + main.getGrnd_level() + "\r\n"
+            );
+
+            String icon = weathers.get(0).getIcon();
+
+            imageWeatherIcon.setVisibility(View.VISIBLE);
+            Glide.with(getApplicationContext())
+                    .asBitmap()
+                    .load("http://openweathermap.org/img/wn/" + icon + "@2x.png")
+                    .into(imageWeatherIcon);
         });
 
     }
