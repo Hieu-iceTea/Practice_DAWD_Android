@@ -48,42 +48,50 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        new WeatherDataRepository(cityName).getData((weathers, main) -> {
+        new WeatherDataRepository(cityName).getData(
 
-            // 01. Get result text
-            String result = "";
+                (weathers, main) -> {
 
-            if (!weathers.isEmpty()) {
-                for (Weather weather : weathers) {
-                    result += weather.getMain() + ": " + weather.getDescription() + "\r\n";
+                    // 01. Get result text
+                    String result = "";
+
+                    if (!weathers.isEmpty()) {
+                        for (Weather weather : weathers) {
+                            result += weather.getMain() + ": " + weather.getDescription() + "\r\n";
+                        }
+                        result += "\r\n";
+                    }
+
+                    result += "Temp: " + Util.convertTempKelvinToCelsius(main.getTemp(), 2) + " °C" + "\r\n" +
+                            "Feels Like: " + Util.convertTempKelvinToCelsius(main.getFeels_like(), 2) + " °C" + "\r\n" +
+                            "Temp Min: " + Util.convertTempKelvinToCelsius(main.getTemp_min(), 2) + " °C" + "\r\n" +
+                            "Temp Max: " + Util.convertTempKelvinToCelsius(main.getTemp_max(), 2) + " °C" + "\r\n" +
+                            "Pressure: " + main.getPressure() + "\r\n" +
+                            "Humidity: " + main.getHumidity() + "\r\n" +
+                            "Sea Level: " + main.getSea_level() + "\r\n" +
+                            "Grnd Level: " + main.getGrnd_level() + "\r\n";
+
+
+                    lblResult.setText(result);
+
+                    // 02. Get icon
+                    if (!weathers.isEmpty()) {
+                        String icon = weathers.get(0).getIcon();
+
+                        imageWeatherIcon.setVisibility(View.VISIBLE);
+                        Glide.with(getApplicationContext())
+                                .asBitmap()
+                                .load("https://openweathermap.org/img/wn/" + icon + "@2x.png")
+                                .into(imageWeatherIcon);
+                    }
+
+                },
+
+                error -> {
+                    notificationCouldNotFindWeather();
                 }
-                result += "\r\n";
-            }
 
-            result += "Temp: " + Util.convertTempKelvinToCelsius(main.getTemp(), 2) + " °C" + "\r\n" +
-                    "Feels Like: " + Util.convertTempKelvinToCelsius(main.getFeels_like(), 2) + " °C" + "\r\n" +
-                    "Temp Min: " + Util.convertTempKelvinToCelsius(main.getTemp_min(), 2) + " °C" + "\r\n" +
-                    "Temp Max: " + Util.convertTempKelvinToCelsius(main.getTemp_max(), 2) + " °C" + "\r\n" +
-                    "Pressure: " + main.getPressure() + "\r\n" +
-                    "Humidity: " + main.getHumidity() + "\r\n" +
-                    "Sea Level: " + main.getSea_level() + "\r\n" +
-                    "Grnd Level: " + main.getGrnd_level() + "\r\n";
-
-
-            lblResult.setText(result);
-
-            // 02. Get icon
-            if (!weathers.isEmpty()) {
-                String icon = weathers.get(0).getIcon();
-
-                imageWeatherIcon.setVisibility(View.VISIBLE);
-                Glide.with(getApplicationContext())
-                        .asBitmap()
-                        .load("https://openweathermap.org/img/wn/" + icon + "@2x.png")
-                        .into(imageWeatherIcon);
-            }
-
-        });
+        );
 
     }
 

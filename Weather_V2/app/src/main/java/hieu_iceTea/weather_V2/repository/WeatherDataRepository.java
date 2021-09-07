@@ -1,5 +1,8 @@
 package hieu_iceTea.weather_V2.repository;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,7 +31,7 @@ public class WeatherDataRepository {
         this.url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=3790f712337cbfece38c0ae41594ad7c";
     }
 
-    public void getData(AsyncProcess callBackAsyncProcess) {
+    public void getData(AsyncProcess callBackAsyncProcess, @Nullable Response.ErrorListener errorListener) {
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 url,
@@ -67,7 +70,9 @@ public class WeatherDataRepository {
 
                 },
                 error -> {
-                    //nothing
+                    if (errorListener != null) {
+                        errorListener.onErrorResponse(error);
+                    }
                 }
 
         );
